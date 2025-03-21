@@ -1,4 +1,4 @@
-package com.johnsoncskoo.shortify;
+package com.johnsoncskoo.shortify.service;
 
 import com.johnsoncskoo.shortify.dto.LinkDTO;
 

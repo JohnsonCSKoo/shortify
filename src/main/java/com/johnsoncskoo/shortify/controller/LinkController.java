@@ -1,6 +1,6 @@
 package com.johnsoncskoo.shortify.controller;
 
-import com.johnsoncskoo.shortify.LinkService;
+import com.johnsoncskoo.shortify.service.LinkService;
 import com.johnsoncskoo.shortify.dto.LinkDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

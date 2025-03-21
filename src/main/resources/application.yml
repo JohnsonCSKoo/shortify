@@ -26,3 +26,12 @@ spring:
 
 shortify:
   word-list: static/word-list.txt
+
+rate-limit:
+  endpoints:
+    [/api/v1/links/]:
+      method: POST
+      limit: 10
+    [/api/v1/links/**]:
+      method: GET
+      limit: 30

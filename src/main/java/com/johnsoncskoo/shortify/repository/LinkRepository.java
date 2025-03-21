@@ -9,4 +9,8 @@ public interface LinkRepository extends JpaRepository<Link, String> {
     boolean existsByIdAndUrl(String id, String url);
 
     Link findByUrl(String url);
+
+    Link findByIdIgnoreCase(String id);
+
+    boolean existsByIdIgnoreCase(String newId);
 }

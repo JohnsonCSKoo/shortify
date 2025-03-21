@@ -1,6 +1,5 @@
-package com.johnsoncskoo.shortify;
+package com.johnsoncskoo.shortify.dto;
 
-import com.johnsoncskoo.shortify.dto.LinkDTO;
 import com.johnsoncskoo.shortify.model.Link;
 
 public class LinkMapper {

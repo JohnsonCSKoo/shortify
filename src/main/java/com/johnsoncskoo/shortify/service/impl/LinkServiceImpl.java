@@ -1,14 +1,12 @@
-package com.johnsoncskoo.shortify.impl;
+package com.johnsoncskoo.shortify.service.impl;
 
-import com.johnsoncskoo.shortify.LinkMapper;
-import com.johnsoncskoo.shortify.LinkService;
+import com.johnsoncskoo.shortify.dto.LinkMapper;
+import com.johnsoncskoo.shortify.service.LinkService;
 import com.johnsoncskoo.shortify.dto.LinkDTO;
 import com.johnsoncskoo.shortify.exception.ResourceNotFoundException;
 import com.johnsoncskoo.shortify.model.Link;
 import com.johnsoncskoo.shortify.repository.LinkRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,16 +63,20 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public LinkDTO getLink(String id) {
-        var link = linkRepository.findById(id.toLowerCase())
-                .orElseThrow(() -> ResourceNotFoundException.toException(Link.class, id));
+        var link = linkRepository.findByIdIgnoreCase(id);
+        if (link == null) {
+            throw ResourceNotFoundException.toException(Link.class, id);
+        }
 
         return LinkMapper.toLinkDTO(link);
     }
 
     @Override
     public LinkDTO updateLink(String id, String url) {
-        var link = linkRepository.findById(id.toLowerCase())
-                .orElseThrow(() -> ResourceNotFoundException.toException(Link.class, id));
+        var link = linkRepository.findByIdIgnoreCase(id);
+        if (link == null) {
+            throw ResourceNotFoundException.toException(Link.class, id);
+        }
 
         link.setUrl(url);
         var updatedLink = linkRepository.save(link);
@@ -96,12 +98,12 @@ public class LinkServiceImpl implements LinkService {
         var offset1 = Math.random() * operand;
         var offset2 = Math.random() * operand;
 
-        var word1 = this.keywords.get((int) currentTimestamp % operand);
-        var word2 = this.keywords.get((int) ((currentTimestamp + offset1) % operand));
-        var word3 = this.keywords.get((int) ((currentTimestamp + offset2) % operand));
+        var word1 = this.keywords.get(Math.abs((int) currentTimestamp % operand));
+        var word2 = this.keywords.get(Math.abs((int) ((currentTimestamp + offset1) % operand)));
+        var word3 = this.keywords.get(Math.abs((int) ((currentTimestamp + offset2) % operand)));
         var newId = word1 + word2 + word3;
 
-        if (linkRepository.existsById(newId)) {
+        if (linkRepository.existsByIdIgnoreCase(newId)) {
             return generateUniqueLink();
         }
 
