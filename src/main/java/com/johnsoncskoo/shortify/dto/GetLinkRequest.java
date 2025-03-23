@@ -1,5 +1,6 @@
 package com.johnsoncskoo.shortify.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -7,7 +8,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkDTO {
-    private String id;
-    private String url;
+public class GetLinkRequest {
+    @NotNull private String id;
 }

@@ -3,15 +3,15 @@ package com.johnsoncskoo.shortify.dto;
 import com.johnsoncskoo.shortify.model.Link;
 
 public class LinkMapper {
-    public static Link toLink(LinkDTO linkDTO) {
+    public static Link toLink(LinkResponse linkResponse) {
         return Link.builder()
-                .id(linkDTO.getId())
-                .url(linkDTO.getUrl())
+                .id(linkResponse.getId())
+                .url(linkResponse.getUrl())
                 .build();
     }
 
-    public static LinkDTO toLinkDTO(Link link) {
-        return LinkDTO.builder()
+    public static LinkResponse toLinkResponse(Link link) {
+        return LinkResponse.builder()
                 .id(link.getId())
                 .url(link.getUrl())
                 .build();

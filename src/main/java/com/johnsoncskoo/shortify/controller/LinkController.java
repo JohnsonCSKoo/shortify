@@ -1,10 +1,11 @@
 package com.johnsoncskoo.shortify.controller;
 
+import com.johnsoncskoo.shortify.dto.*;
 import com.johnsoncskoo.shortify.service.LinkService;
-import com.johnsoncskoo.shortify.dto.LinkDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,28 +17,36 @@ public class LinkController {
     private final LinkService linkService;
 
     @PostMapping("/")
-    public ResponseEntity<LinkDTO> createLink(
-            @RequestBody String url
+    public ResponseEntity<LinkResponse> createLink(
+            @Validated @RequestBody final CreateLinkRequest linkRequest
     ) {
-        var response = linkService.createLink(url);
+        var response = linkService.createLink(linkRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<LinkResponse> getLink(
+            @PathVariable String id
+    ) {
+        var response = linkService.getLink(new GetLinkRequest(id));
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<LinkDTO> updateLink(
+    public ResponseEntity<LinkResponse> updateLink(
             @PathVariable String id,
-            @RequestBody String url
+            @Validated @RequestBody final UpdateLinkRequest linkRequest
     ) {
-        var response = linkService.updateLink(id, url);
+        var response = linkService.updateLink(linkRequest);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("{id}")
     public HttpStatus deleteLink(
             @PathVariable String id,
-            @RequestBody String url
-    ) {
-        linkService.deleteLink(id, url);
+            @Validated @RequestBody final DeleteLinkRequest linkRequest
+            ) {
+        linkService.deleteLink(linkRequest);
         return HttpStatus.OK;
     }
 }

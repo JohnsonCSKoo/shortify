@@ -1,5 +1,7 @@
 package com.johnsoncskoo.shortify;
 
+import com.johnsoncskoo.shortify.dto.CreateLinkRequest;
+import com.johnsoncskoo.shortify.dto.GetLinkRequest;
 import com.johnsoncskoo.shortify.exception.ResourceNotFoundException;
 import com.johnsoncskoo.shortify.model.Link;
 import com.johnsoncskoo.shortify.repository.LinkRepository;
@@ -33,7 +35,7 @@ public class LinkServiceTests {
         });
 
         // Act
-        var result = linkService.createLink(url);
+        var result = linkService.createLink(new CreateLinkRequest(url));
 
         // Assert
         assertNotNull(result);
@@ -48,7 +50,7 @@ public class LinkServiceTests {
         when(linkRepository.findByUrl(url)).thenReturn(existingLink);
 
         // Act
-        var result = linkService.createLink(url);
+        var result = linkService.createLink(new CreateLinkRequest(url));
 
         // Assert
         assertNotNull(result);
@@ -62,7 +64,7 @@ public class LinkServiceTests {
         when(linkRepository.findById(id)).thenReturn(null);
 
         // Act, Assert
-        assertThrows(ResourceNotFoundException.class, () -> linkService.getLink(id));
+        assertThrows(ResourceNotFoundException.class, () -> linkService.getLink(new GetLinkRequest(id)));
     }
 
     @Test
@@ -74,7 +76,7 @@ public class LinkServiceTests {
         when(linkRepository.findByIdIgnoreCase(id)).thenReturn(existingLink);
 
         // Act
-        var result = linkService.getLink(id);
+        var result = linkService.getLink(new GetLinkRequest(id));
 
         // Assert
         assertNotNull(result);

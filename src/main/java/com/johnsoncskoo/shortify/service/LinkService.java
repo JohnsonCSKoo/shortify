@@ -1,10 +1,10 @@
 package com.johnsoncskoo.shortify.service;
 
-import com.johnsoncskoo.shortify.dto.LinkDTO;
+import com.johnsoncskoo.shortify.dto.*;
 
 public interface LinkService {
-    LinkDTO createLink(String url);
-    LinkDTO getLink(String id);
-    LinkDTO updateLink(String id, String url);
-    void deleteLink(String id, String url);
+    LinkResponse createLink(CreateLinkRequest request);
+    LinkResponse getLink(GetLinkRequest request);
+    LinkResponse updateLink(UpdateLinkRequest request);
+    void deleteLink(DeleteLinkRequest request);
 }
