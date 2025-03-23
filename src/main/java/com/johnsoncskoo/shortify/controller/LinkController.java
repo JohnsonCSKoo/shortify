@@ -3,10 +3,13 @@ package com.johnsoncskoo.shortify.controller;
 import com.johnsoncskoo.shortify.dto.*;
 import com.johnsoncskoo.shortify.service.LinkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/v1/links")
@@ -29,7 +32,15 @@ public class LinkController {
             @PathVariable String id
     ) {
         var response = linkService.getLink(new GetLinkRequest(id));
-        return ResponseEntity.ok(response);
+
+        // Cache-Control: max-age=43200, no-transform, public
+        CacheControl cacheControl = CacheControl.maxAge(12, TimeUnit.HOURS)
+                .noTransform()
+                .cachePublic();
+
+        return ResponseEntity.ok()
+                .cacheControl(cacheControl)
+                .body(response);
     }
 
     @PatchMapping("{id}")

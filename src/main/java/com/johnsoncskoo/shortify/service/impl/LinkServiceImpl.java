@@ -8,6 +8,8 @@ import com.johnsoncskoo.shortify.repository.LinkRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -42,6 +44,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    @CachePut(value = "links", key = "#result.url")
     public LinkResponse createLink(CreateLinkRequest request) {
         var existingUrl = linkRepository.findByUrlIgnoreCase(request.getUrl());
 
@@ -61,6 +64,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    @Cacheable(value = "links", key = "#request.id")
     public LinkResponse getLink(GetLinkRequest request) {
         var link = linkRepository.findByIdIgnoreCase(request.getId());
         if (link == null) {
